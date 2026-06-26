@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<!-- saved from url=(0073)file:///D:/Aviation/Aviation/TATS/Orientation/Seminar/seminar-square.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TATS — Discovery Seminar (Square)</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#f5a623;--gold2:#fbbf24;
+  --blue:#38bdf8;--purple:#818cf8;
+  --red:#f87171;--green:#10b981;
+  --bg:#05080f;--border:rgba(255,255,255,.1);
+  --white:rgba(240,244,255,1);--dim:rgba(240,244,255,.82);
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:'Inter',sans-serif;color:var(--white)}
+
+/* ── Outer wrapper — JS scales this to fit any screen ── */
+#outer{position:fixed;background:var(--bg);overflow:hidden}
+
+/* ── Deck ── */
+#deck{position:absolute;inset:0;z-index:1;cursor:pointer}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:96px 52px 44px;overflow:hidden;gap:0}
+.slide.active{display:flex}
+.slide-bg{position:absolute;inset:0;z-index:0}
+.slide-bg img,.slide-bg video{width:100%;height:100%;object-fit:cover}
+.ov{position:absolute;inset:0}
+.slide>*:not(.slide-bg){position:relative;z-index:2}
+
+/* ── Badges ── */
+.badge{font-family:'Orbitron',monospace;font-size:1rem;letter-spacing:3px;padding:6px 20px;border-radius:28px;margin-bottom:10px;display:inline-block;flex-shrink:0}
+.bg {background:rgba(245,166,35,.18);border:1px solid rgba(245,166,35,.5);color:var(--gold)}
+.bb {background:rgba(56,189,248,.18);border:1px solid rgba(56,189,248,.5);color:var(--blue)}
+.bgr{background:rgba(16,185,129,.18);border:1px solid rgba(16,185,129,.5);color:var(--green)}
+.bp {background:rgba(129,140,248,.18);border:1px solid rgba(129,140,248,.5);color:var(--purple)}
+
+/* ── Typography ── */
+h1.hero{font-family:'Orbitron',monospace;font-size:4.5rem;font-weight:900;text-align:center;line-height:1.1;letter-spacing:2px}
+h2.ttl{font-family:'Orbitron',monospace;font-size:2.3rem;font-weight:700;text-align:center;margin-bottom:12px;flex-shrink:0}
+.sub{font-size:1.65rem;color:var(--dim);text-align:center;max-width:920px;line-height:1.5}
+
+/* ── Cards ── */
+.grid{display:grid;width:100%;margin:0 auto}
+.g2{grid-template-columns:repeat(2,1fr);gap:11px}
+.g3{grid-template-columns:repeat(3,1fr);gap:10px}
+.g22{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,auto);gap:11px}
+.card{background:rgba(5,8,20,.84);border:1px solid var(--border);border-radius:14px;padding:18px 22px;display:flex;flex-direction:column;justify-content:flex-start}
+.ci{font-size:2.6rem;margin-bottom:5px}
+.ct{font-family:'Orbitron',monospace;font-size:1.5rem;letter-spacing:2px;margin-bottom:8px;color:var(--gold2)}
+.cb{font-size:1.32rem;color:var(--dim);line-height:1.5}
+
+/* ── Subjects grid ── */
+.subjects{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;width:100%;margin:0 auto}
+.subj{background:rgba(5,8,20,.84);border-radius:12px;padding:13px 10px;text-align:center}
+.si{font-size:2.1rem;margin-bottom:5px}
+.sn2{font-family:'Orbitron',monospace;font-size:1rem;letter-spacing:2px;color:var(--gold2);margin-bottom:4px}
+.sd{font-size:1.1rem;color:var(--dim);line-height:1.4}
+
+/* ── Stage block (Zero to Cockpit) ── */
+.stage{background:rgba(5,8,20,.84);border-radius:14px;padding:18px 16px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.st-icon{font-size:2.6rem;margin-bottom:6px}
+.st-num{font-family:'Orbitron',monospace;font-size:1rem;letter-spacing:2px;margin-bottom:5px}
+.st-title{font-family:'Orbitron',monospace;font-size:1.15rem;color:var(--white);margin-bottom:7px}
+.st-body{font-size:1.1rem;color:var(--dim);line-height:1.45}
+
+/* ── Requirements ── */
+.rlist{list-style:none;width:100%}
+.rlist li{display:flex;align-items:flex-start;gap:14px;padding:10px 0;border-bottom:1px solid var(--border);font-size:1.32rem}
+.rlist li:last-child{border-bottom:none}
+.ri{font-size:1.55rem;width:32px;text-align:center;flex-shrink:0;margin-top:2px}
+
+/* ── CTA box ── */
+.cbox{background:linear-gradient(135deg,rgba(245,166,35,.12),rgba(56,189,248,.08));border:1px solid rgba(245,166,35,.32);border-radius:14px;padding:14px 26px;text-align:center;width:100%}
+.cbox p{font-size:1.32rem;color:var(--dim);line-height:1.6}
+
+/* ── Progress ── */
+#progress{position:absolute;bottom:0;left:0;height:5px;background:linear-gradient(90deg,var(--gold),var(--blue));z-index:100;transition:width .4s ease;pointer-events:none;width:0}
+
+/* ── Nav ── */
+#nav{position:absolute;bottom:10px;right:14px;z-index:100;display:flex;align-items:center;gap:6px;background:rgba(5,8,20,.5);border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:4px 10px;backdrop-filter:blur(6px)}
+#ctr{font-family:'Orbitron',monospace;font-size:.6rem;color:rgba(240,244,255,.25);min-width:36px;text-align:center}
+#nav button{background:none;border:none;color:rgba(240,244,255,.2);cursor:pointer;font-size:.75rem;padding:2px 4px;transition:color .2s}
+#nav button:hover{color:rgba(240,244,255,.6)}
+#hint{display:none}
+
+/* ── Logo ── */
+#logo{position:absolute;top:12px;left:16px;z-index:100;display:flex;align-items:center;gap:14px}
+#logo img{height:70px;width:auto;object-fit:contain;display:block;flex-shrink:0;filter:drop-shadow(0 2px 10px rgba(0,0,0,.7))}
+#logo-text{font-family:'Orbitron',monospace;line-height:1.25;text-align:left}
+#logo-text .lt1{display:block;font-size:1.45rem;font-weight:900;letter-spacing:4px;color:#f5c518;text-shadow:0 0 18px rgba(245,197,24,.4)}
+#logo-text .lt2{display:block;font-size:.85rem;font-weight:400;letter-spacing:5px;color:rgba(240,244,255,.85);margin-top:3px;text-align:center}
+
+/* ── Speaker Notes ── */
+#notes{position:absolute;bottom:0;left:0;right:0;z-index:200;background:rgba(2,4,12,.97);border-top:2px solid var(--gold);transform:translateY(100%);transition:transform .3s ease;max-height:300px;overflow-y:auto}
+#notes.open{transform:translateY(0)}
+#nh{font-family:'Orbitron',monospace;font-size:.9rem;letter-spacing:3px;color:var(--gold);display:flex;justify-content:space-between;padding:12px 28px 6px;border-bottom:1px solid rgba(245,166,35,.2)}
+#nb{font-size:1.1rem;color:var(--dim);line-height:1.7;padding:12px 28px 16px}
+#nt{color:var(--blue)}
+</style>
+</head>
+<body>
+<div id="outer" style="width: 1080px; height: 1080px; left: 110px; top: 0px; transform: scale(0.862963); transform-origin: left top;">
+
+<div id="logo">
+  <img src="./media/logo.png" alt="The Aviator Training School">
+  <div id="logo-text"><span class="lt1">THE AVIATOR</span><span class="lt2">TRAINING SCHOOL</span></div>
+</div>
+<div id="progress" style="width: 75%;"></div>
+
+<div id="deck">
+
+<!-- ══ S1 — TITLE ══════════════════════════════════════════════ -->
+<div class="slide active" id="s1" data-time="3 min" data-notes="Welcome everyone. Introduce yourself — your name, your aviation background, your role at TATS. Opening line: &#39;Over the next hour I&#39;m going to show you exactly what it takes to become a pilot, what you&#39;ll study here at TATS, and how our programme connects you to an EASA licence and a global aviation career. No flying experience needed to be in this room — just curiosity and the desire to fly.&#39; Ask: &#39;Has anyone here ever thought seriously about becoming a pilot?&#39; This relaxes the room and starts a conversation.">
+  <div class="slide-bg">
+    <video autoplay="" muted="" loop="" playsinline="" preload="none"><source src="./media/takeoff.mp4" type="video/mp4"></video>
+    <div class="ov" style="background:linear-gradient(160deg,rgba(3,5,14,.9) 50%,rgba(245,166,35,.06))"></div>
+  </div>
+  <div class="badge bg">THE AVIATOR TRAINING SCHOOL</div>
+  <h1 class="hero" style="margin:18px 0">BEGIN YOUR<br><span style="color:var(--gold)">AVIATION<br>JOURNEY</span></h1>
+  <p class="sub" style="margin:22px 0 32px;font-size:1.5rem">Discovery Seminar —<br>Everything You Need to Know<br>About Becoming a Pilot</p>
+
+</div>
+
+<!-- ══ S2 — ABOUT TATS ════════════════════════════════════════ -->
+<div class="slide" id="s2" data-time="7 min" data-notes="Explain the TATS model clearly. TATS provides comprehensive ground school theory training — all 8 subjects that form the academic foundation of an EASA licence. Once students complete ground theory with us, they proceed abroad for flight training and obtain a globally-recognised EASA licence. Emphasise: &#39;You don&#39;t just go abroad to fly — you go abroad fully prepared.&#39; Cover your facilities, class sizes, and instructors.">
+  <div class="slide-bg">
+    <img src="./media/female-pilot-entering-cockpit-of-small-airplane-in-2025-06-10-08-24-56-utc.jpg" alt="">
+    <div class="ov" style="background:rgba(3,5,14,.83)"></div>
+  </div>
+  <div class="badge bg">ABOUT TATS</div>
+  <h2 class="ttl">Your Ground School —<br><span style="color:var(--gold)">Your Foundation</span></h2>
+  <div class="grid g22" style="width:100%;margin-top:8px">
+    <div class="card" style="border-color:rgba(245,166,35,.35)">
+      <div class="ct" style="margin-bottom:8px">What We Do</div>
+      <div class="cb">All 8 core ground school subjects — the academic backbone of your pilot training and EASA licence</div>
+    </div>
+    <div class="card" style="border-color:rgba(56,189,248,.35)">
+      <div class="ct" style="color:var(--blue);margin-bottom:8px">The EASA Pathway</div>
+      <div class="cb">Ground school with us, flight training abroad — earning a globally-recognised EASA licence</div>
+    </div>
+    <div class="card" style="border-color:rgba(16,185,129,.35)">
+      <div class="ct" style="color:var(--green);margin-bottom:8px">Expert Instructors</div>
+      <div class="cb">Real aviation experience in the classroom — practical cockpit knowledge built from hours in the cockpit</div>
+    </div>
+    <div class="card" style="border-color:rgba(129,140,248,.35)">
+      <div class="ct" style="color:var(--purple);margin-bottom:8px">Small Classes</div>
+      <div class="cb">Limited seats per intake — small class numbers mean every student gets direct attention from the instructor, not just a seat in the room</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S3 — CAREER PATHS ══════════════════════════════════════ -->
+<div class="slide" id="s3" data-time="5 min" data-notes="Most prospects think airline pilot is the only option — expand their vision. Ask: &#39;Which of these appeals to you most?&#39; Key message: aviation is not one career, it&#39;s dozens — and an EASA licence opens doors to all of them globally.">
+  <div class="slide-bg">
+    <img src="./media/confident-female-pilot-posing-in-hangar-with-small-2025-05-26-20-46-46-utc.jpg" alt="">
+    <div class="ov" style="background:rgba(3,5,14,.80)"></div>
+  </div>
+  <div class="badge bgr">WHERE CAN THIS TAKE YOU?</div>
+  <h2 class="ttl">Aviation Careers —<br><span style="color:var(--green)">Your Options</span></h2>
+  <div class="grid g22" style="width:100%;margin-top:8px">
+    <div class="card" style="border-color:rgba(56,189,248,.3)">
+      <div class="ct" style="color:var(--blue)">Commercial Airlines</div>
+      <div class="cb">First Officer to Captain — seniority career with strong global demand</div>
+    </div>
+    <div class="card" style="border-color:rgba(245,166,35,.3)">
+      <div class="ct">Charter &amp; Corporate</div>
+      <div class="cb">High-net-worth clients, flexible schedules, premium destinations</div>
+    </div>
+    <div class="card" style="border-color:rgba(248,113,113,.3)">
+      <div class="ct" style="color:var(--red)">Air Ambulance</div>
+      <div class="cb">Life-saving missions — one of aviation's most meaningful roles</div>
+    </div>
+    <div class="card" style="border-color:rgba(16,185,129,.3)">
+      <div class="ct" style="color:var(--green)">Flight Instruction</div>
+      <div class="cb">Build hours teaching — shaping the next generation of aviators</div>
+    </div>
+  </div>
+  <div class="cbox" style="margin-top:14px;padding:14px 28px">
+    <p style="font-size:1.2rem">🌐 <strong style="color:var(--gold2)">EASA licence recognised in dozens of countries</strong> — your career has no borders</p>
+  </div>
+</div>
+
+<!-- ══ S4 — ZERO TO COCKPIT ══════════════════════════════════ -->
+<div class="slide" id="s4" data-time="7 min" data-notes="Walk through each stage: Stage 1 — right here at TATS, 8 subjects and a simulator. Stage 2 — integrated flight training abroad, no PPL stage, straight to Frozen ATPL. Stage 3 — DGCA conversion when you return to fly commercially in India. Stage 4 — airline application support. Close: 'We don't just teach aviation — we walk with you from zero to the cockpit.'">
+  <div class="slide-bg">
+    <img src="./media/airplane-at-airport-during-golden-hour-2025-02-16-10-58-35-utc.jpg" alt="">
+    <div class="ov" style="background:rgba(3,5,14,.85)"></div>
+  </div>
+  <div class="badge bg">THE FULL JOURNEY</div>
+  <h2 class="ttl">Zero to Cockpit —<br><span style="color:var(--gold)">We Walk With You</span></h2>
+
+  <div class="grid g22" style="width:100%;margin-top:8px">
+    <div class="stage" style="border:1px solid rgba(245,166,35,.45)">
+      <div class="st-icon">📚</div>
+      <div class="st-num" style="color:var(--gold)">STAGE 1</div>
+      <div class="st-title">TATS Ground School</div>
+      <div class="st-body">8 theory subjects · Simulator · EASA exam prep · Human factors</div>
+    </div>
+    <div class="stage" style="border:1px solid rgba(56,189,248,.45)">
+      <div class="st-icon">🛫</div>
+      <div class="st-num" style="color:var(--blue)">STAGE 2</div>
+      <div class="st-title">Flight Training Abroad</div>
+      <div class="st-body">Integrated course · Solo &amp; dual flying · EASA Frozen ATPL</div>
+    </div>
+    <div class="stage" style="border:1px solid rgba(129,140,248,.45)">
+      <div class="st-icon">📄</div>
+      <div class="st-num" style="color:var(--purple)">STAGE 3</div>
+      <div class="st-title">DGCA Conversion</div>
+      <div class="st-body">EASA → DGCA licence · Full guidance · Fly commercially in India</div>
+    </div>
+    <div class="stage" style="border:1px solid rgba(16,185,129,.45)">
+      <div class="st-icon">🏢</div>
+      <div class="st-num" style="color:var(--green)">STAGE 4</div>
+      <div class="st-title">Airline Readiness</div>
+      <div class="st-body">Interview prep · Resume guidance · Industry orientation</div>
+    </div>
+  </div>
+
+  <div class="cbox" style="margin-top:14px;padding:14px 28px">
+    <p style="font-size:1.2rem">From day one in the classroom to your airline interview — <strong style="color:var(--gold)">TATS is with you every step.</strong></p>
+  </div>
+</div>
+
+<!-- ══ S5 — 8 SUBJECTS ════════════════════════════════════════ -->
+<div class="slide" id="s5" data-time="4 min" data-notes="Curriculum overview — don&#39;t go deep, just show breadth. Key message: &#39;These 8 subjects connect directly to decisions you&#39;ll make in the cockpit.&#39; Ask: &#39;Which do you think is most important?&#39; The answer — Aviation Psychology — often surprises people.">
+  <div class="slide-bg">
+    <img src="./media/dispatcher-background-the-workplace-of-the-traffi-2025-03-10-11-16-46-utc.jpg" alt="">
+    <div class="ov" style="background:rgba(3,5,14,.83)"></div>
+  </div>
+  <div class="badge bg">GROUND SCHOOL</div>
+  <h2 class="ttl">8 Core Subjects —<br><span style="color:var(--gold)">What You Will Learn</span></h2>
+  <div class="subjects" style="margin-top:8px">
+    <div class="subj" style="border:1px solid rgba(16,185,129,.3);display:flex;flex-direction:column;justify-content:center">
+      <div class="si">🌦️</div><div class="sn2" style="color:var(--green)">Meteorology</div>
+      <div class="sd">Weather patterns &amp; go/no-go decisions</div>
+    </div>
+    <div class="subj" style="border:1px solid rgba(248,113,113,.3);display:flex;flex-direction:column;justify-content:center">
+      <div class="si">📋</div><div class="sn2" style="color:var(--red)">Regulations</div>
+      <div class="sd">Aviation law &amp; airspace compliance</div>
+    </div>
+    <div class="subj" style="border:1px solid rgba(56,189,248,.3);display:flex;flex-direction:column;justify-content:center">
+      <div class="si">🗺️</div><div class="sn2" style="color:var(--blue)">Navigation</div>
+      <div class="sd">Charts, GPS, VOR &amp; dead reckoning</div>
+    </div>
+    <div class="subj" style="border:1px solid rgba(129,140,248,.3);display:flex;flex-direction:column;justify-content:center">
+      <div class="si">📻</div><div class="sn2" style="color:var(--purple)">Communications</div>
+      <div class="sd">Radio procedures &amp; ATC phraseology</div>
+    </div>
+    <div class="subj" style="border:1px solid rgba(245,166,35,.3);display:flex;flex-direction:column;justify-content:center">
+      <div class="si">⚙️</div><div class="sn2" style="color:var(--gold2)">Technical Knowledge</div>
+      <div class="sd">Aircraft systems &amp; performance</div>
+    </div>
+    <div class="subj" style="border:1px solid rgba(56,189,248,.3);display:flex;flex-direction:column;justify-content:center">
+      <div class="si">✈️</div><div class="sn2" style="color:var(--blue)">Principles of Flight</div>
+      <div class="sd">Aerodynamics, lift, drag &amp; stability</div>
+    </div>
+    <div class="subj" style="border:1px solid rgba(251,191,36,.3);display:flex;flex-direction:column;justify-content:center">
+      <div class="si">🖥️</div><div class="sn2" style="color:var(--gold2)">Simulator Training</div>
+      <div class="sd">Cockpit procedures &amp; emergencies</div>
+    </div>
+    <div class="subj" style="border:1px solid rgba(129,140,248,.3);display:flex;flex-direction:column;justify-content:center">
+      <div class="si">🧠</div><div class="sn2" style="color:var(--purple)">Aviation Psychology</div>
+      <div class="sd">Pilot psychology &amp; decision-making</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S6 — METEOROLOGY & REGULATIONS ════════════════════════ -->
+<div class="slide" id="s6" data-time="5 min" data-notes="Meteorology: &#39;Weather is one of the leading factors in aviation accidents. We teach students to read forecasts, identify hazards like icing and turbulence, and make smart go/no-go decisions.&#39; Regulations: &#39;The rules of the air exist because someone paid a price to establish them. We cover EASA regulations, airspace, and pre-flight documentation.&#39;">
+  <div class="slide-bg">
+    <img src="./media/met.jpg" alt="">
+    <div class="ov" style="background:rgba(3,5,14,.81)"></div>
+  </div>
+  <h2 class="ttl">Meteorology &amp;<br><span style="color:var(--green)">Regulations</span></h2>
+  <div class="grid g22" style="width:100%;margin-top:8px">
+    <div class="card" style="border-color:rgba(16,185,129,.35)">
+      <div class="ct" style="color:var(--green)">Meteorology</div>
+      <div class="cb">Read forecasts · Identify icing, storms &amp; fog · Make go/no-go decisions</div>
+    </div>
+    <div class="card" style="border-color:rgba(248,113,113,.35)">
+      <div class="ct" style="color:var(--red)">Regulations</div>
+      <div class="cb">EASA airspace · ARROW documentation · ATC procedures · Legal framework</div>
+    </div>
+    <div class="card" style="border-color:rgba(16,185,129,.25);background:rgba(16,185,129,.06)">
+      <div class="cb"><strong style="color:var(--green)">Meteorology outcomes:</strong><br>Interpret METAR &amp; TAF · Classify cloud hazards · Understand frontal systems</div>
+    </div>
+    <div class="card" style="border-color:rgba(248,113,113,.25);background:rgba(248,113,113,.06)">
+      <div class="cb"><strong style="color:var(--red)">Regulations outcomes:</strong><br>Navigate EASA airspace · Complete pre-flight docs · Know pilot-in-command responsibilities</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S7 — NAVIGATION & COMMUNICATIONS ═══════════════════════ -->
+<div class="slide" id="s7" data-time="5 min" data-notes="Navigation: &#39;We teach both traditional and GPS navigation — students plan a real flight and execute it.&#39; Communications: &#39;Our students practice ATC until it becomes natural. When you go abroad, you won&#39;t freeze on the radio.&#39;">
+  <div class="slide-bg">
+    <img src="./media/fig10.jpg" alt="">
+    <div class="ov" style="background:rgba(3,5,14,.83)"></div>
+  </div>
+  <h2 class="ttl">Navigation &amp;<br><span style="color:var(--blue)">Communications</span></h2>
+  <div class="grid g22" style="width:100%;margin-top:8px">
+    <div class="card" style="border-color:rgba(56,189,248,.35)">
+      <div class="ct" style="color:var(--blue)">Navigation</div>
+      <div class="cb">Chart reading · Flight planning · VOR/NDB · GPS · Dead reckoning</div>
+    </div>
+    <div class="card" style="border-color:rgba(129,140,248,.35)">
+      <div class="ct" style="color:var(--purple)">Communications</div>
+      <div class="cb">ICAO phraseology · ATC procedures · Emergency calls · Radio failure</div>
+    </div>
+    <div class="card" style="border-color:rgba(56,189,248,.25);background:rgba(56,189,248,.06)">
+      <div class="cb"><strong style="color:var(--blue)">Navigation outcomes:</strong><br>Plan cross-country routes · Calculate fuel &amp; time · Read aeronautical charts</div>
+    </div>
+    <div class="card" style="border-color:rgba(129,140,248,.25);background:rgba(129,140,248,.06)">
+      <div class="cb"><strong style="color:var(--purple)">Communications outcomes:</strong><br>Talk to ATC confidently · Correct phraseology · Handle radio failure situations</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S8 — TECHNICAL & PRINCIPLES OF FLIGHT ═════════════════ -->
+<div class="slide" id="s8" data-time="5 min" data-notes="Technical: &#39;You need to understand your aircraft well enough to know when something is wrong. We cover engines, fuel, hydraulics, avionics, and performance.&#39; Principles of Flight: &#39;The physics of how an aircraft stays in the air — and why it sometimes doesn&#39;t. In the cockpit this knowledge becomes instinct.&#39;">
+  <div class="slide-bg">
+    <img src="./media/Technical.jpg" alt="">
+    <div class="ov" style="background:rgba(3,5,14,.83)"></div>
+  </div>
+  <h2 class="ttl">Technical Knowledge &amp;<br><span style="color:var(--gold)">Principles of Flight</span></h2>
+  <div class="grid g22" style="width:100%;margin-top:8px">
+    <div class="card" style="border-color:rgba(245,166,35,.35)">
+      <div class="ct" style="color:var(--gold2)">Technical Knowledge</div>
+      <div class="cb">Engines · Fuel · Hydraulics · Electrical · Avionics · Weight &amp; balance</div>
+    </div>
+    <div class="card" style="border-color:rgba(56,189,248,.35)">
+      <div class="ct" style="color:var(--blue)">Principles of Flight</div>
+      <div class="cb">Lift · Drag · Thrust · Weight · Stability · Stall &amp; spin recovery</div>
+    </div>
+    <div class="card" style="border-color:rgba(245,166,35,.25);background:rgba(245,166,35,.06)">
+      <div class="cb"><strong style="color:var(--gold2)">Technical outcomes:</strong><br>Calculate weight &amp; balance · Understand system failures · Read performance charts</div>
+    </div>
+    <div class="card" style="border-color:rgba(56,189,248,.25);background:rgba(56,189,248,.06)">
+      <div class="cb"><strong style="color:var(--blue)">Flight outcomes:</strong><br>Explain the four forces · Understand stall &amp; recovery · Apply aerodynamics in real flight</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S9 — SIMULATOR TRAINING ════════════════════════════════ -->
+<div class="slide" id="s9" data-time="5 min" data-notes="&#39;The simulator is not a game — it is a serious training environment. Engine failures, instrument failures, emergency checklists — you handle these in the sim first.&#39; If the simulator is on-site, offer a tour after the seminar. That experience is your single most powerful conversion tool.">
+  <div class="slide-bg">
+    <img src="./media/Simulator.jpg" alt="">
+    <div class="ov" style="background:rgba(3,5,14,.79)"></div>
+  </div>
+  <div class="badge bb">SIMULATOR TRAINING</div>
+  <h2 class="ttl">Where Theory Meets<br><span style="color:var(--blue)">Practice</span></h2>
+  <div class="grid g22" style="width:100%;margin-top:8px">
+    <div class="card" style="border-color:rgba(56,189,248,.3);text-align:center">
+      <div class="ct" style="color:var(--blue)">Safe to Fail</div>
+      <div class="cb">Engine failures, instrument faults, emergencies — zero risk. Build the responses that keep you safe.</div>
+    </div>
+    <div class="card" style="border-color:rgba(245,166,35,.3);text-align:center">
+      <div class="ct">Cockpit Confidence</div>
+      <div class="cb">Instruments and checklists become familiar before you ever fly. Arrive abroad confident, not overwhelmed.</div>
+    </div>
+    <div class="card" style="border-color:rgba(16,185,129,.3);text-align:center">
+      <div class="ct" style="color:var(--green)">Structured Debriefs</div>
+      <div class="cb">Every session reviewed with your instructor — targeted feedback that accelerates learning.</div>
+    </div>
+    <div class="cbox" style="margin:0">
+      <p style="font-size:1.25rem">The simulator is where you are allowed to make mistakes — and learn from them — without consequence. Use every session to its fullest.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S10 — AVIATION PSYCHOLOGY ════════════════════════════════════ -->
+<div class="slide" id="s10" data-time="5 min" data-notes="&#39;Most aviation accidents are caused by human error — not weather, not mechanical failure. We teach students to understand their own psychology and make better decisions under pressure.&#39; Cover IM SAFE, situational awareness, crew resource management. This subject generates the most discussion — leave time for it.">
+  <div class="slide-bg">
+    <img src="./media/Psychology 1.jpg" alt="">
+    <div class="ov" style="background:rgba(3,5,14,.81)"></div>
+  </div>
+  <div class="badge bp">AVIATION PSYCHOLOGY</div>
+  <h2 class="ttl">The Psychology of<br><span style="color:var(--purple)">Safe Flying</span></h2>
+  <div class="grid g22" style="width:100%;margin-top:8px">
+    <div class="card" style="border-color:rgba(129,140,248,.35)">
+      <div class="ct" style="color:var(--purple)">Why It Matters</div>
+      <div class="cb">Most incidents are caused by human error — not weather, not mechanical failure. Know yourself.</div>
+    </div>
+    <div class="card" style="border-color:rgba(129,140,248,.35)">
+      <div class="ct" style="color:var(--purple)">IM SAFE Checklist</div>
+      <div class="cb"><strong style="color:#818cf8">I</strong>llness · <strong style="color:#818cf8">M</strong>edication · <strong style="color:#818cf8">S</strong>tress · <strong style="color:#818cf8">A</strong>lcohol · <strong style="color:#818cf8">F</strong>atigue · <strong style="color:#818cf8">E</strong>motion — a simple tool that saves lives</div>
+    </div>
+    <div class="card" style="border-color:rgba(129,140,248,.25);background:rgba(129,140,248,.06)">
+      <div class="cb"><strong style="color:var(--purple)">Topics covered:</strong><br>Situational awareness · Decision-making under pressure · Fatigue management · Crew resource management</div>
+    </div>
+    <div class="card" style="border-color:rgba(129,140,248,.25);background:rgba(129,140,248,.06)">
+      <div class="cb"><strong style="color:var(--purple)">You will be able to:</strong><br>Recognise your own limits · Communicate in a crew · Make confident decisions when it matters most</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ S11 — REQUIREMENTS ═════════════════════════════════════ -->
+<div class="slide" id="s11" data-time="4 min" data-notes="Keep this positive — requirements are achievable, not barriers. Age: most people here qualify. Medical: the vast majority pass. Education: no degree needed. English: if you understand this seminar, you qualify. Screening interview: conversational, not a test — we want to understand your motivation. Written exam: aptitude-based, not aviation knowledge — logical reasoning and numerics only.">
+  <div class="slide-bg">
+    <img src="./media/close-up-of-an-airplane-on-the-runway-row-of-wind-2025-03-16-02-29-05-utc.jpg" alt="">
+    <div class="ov" style="background:rgba(3,5,14,.83)"></div>
+  </div>
+  <div class="badge bp">REQUIREMENTS</div>
+  <h2 class="ttl">What You Need to<br><span style="color:var(--purple)">Join TATS</span></h2>
+  <ul class="rlist" style="margin-top:8px">
+    <li><span class="ri">🗓️</span><div><strong style="color:var(--white)">Age</strong><br><span style="color:var(--dim)">18+ for Commercial Pilot Licence pathway</span></div></li>
+    <li><span class="ri">📚</span><div><strong style="color:var(--white)">Education</strong><br><span style="color:var(--dim)">10+2 with Physics and Mathematics — no university degree required</span></div></li>
+    <li><span class="ri">🎙️</span><div><strong style="color:var(--white)">Screening Interview</strong><br><span style="color:var(--dim)">A short interview to understand your motivation and ensure the programme is the right fit for you</span></div></li>
+    <li><span class="ri">✏️</span><div><strong style="color:var(--white)">Written Entrance Exam</strong><br><span style="color:var(--dim)">A basic aptitude assessment — tests your logical reasoning and numerical ability, not prior aviation knowledge</span></div></li>
+    <li><span class="ri">🏥</span><div><strong style="color:var(--white)">Aviation Medical</strong><br><span style="color:var(--dim)">Class 1 Medical required — we guide you through it, the vast majority of applicants pass</span></div></li>
+    <li><span class="ri">🌐</span><div><strong style="color:var(--white)">English Proficiency</strong><br><span style="color:var(--dim)">ICAO Level 4 — if you understand this seminar, you very likely qualify</span></div></li>
+  </ul>
+</div>
+
+<!-- ══ S12 — NEXT STEPS ═══════════════════════════════════════ -->
+<!-- ══ S12 — CONCLUSION ════════════════════════════════════════ -->
+<div class="slide" id="s12"
+  data-time="5 min"
+  data-notes="Close with energy. Remind students what they just covered — 8 subjects, EASA pathway, simulator training, career options, and requirements. End with: 'Every pilot sitting in an airline cockpit today started exactly where you are now — in a room like this, with the same question. The only difference is they took the next step.' Open the floor for questions. Invite everyone to see the simulator before they leave.">
+  <div class="slide-bg">
+    <video autoplay="" muted="" loop="" playsinline="" preload="none"><source src="./media/takeoff.mp4" type="video/mp4"></video>
+    <div class="ov" style="background:linear-gradient(160deg,rgba(3,5,14,.92) 50%,rgba(245,166,35,.06))"></div>
+  </div>
+  <h1 class="hero" style="margin-bottom:28px">THE COCKPIT<br><span style="color:var(--gold)">AWAITS YOU</span></h1>
+  <p class="sub" style="margin-bottom:36px;max-width:820px">Every airline pilot once sat where you are now.<br>The only difference — they took the next step.</p>
+  <div class="cbox" style="max-width:700px">
+    <p style="font-size:1.4rem;color:var(--white);line-height:1.8">
+      Thank you for attending<br>
+      <span style="color:var(--gold);font-family:'Orbitron',monospace;font-size:1.6rem;letter-spacing:3px">THE AVIATOR TRAINING SCHOOL</span><br>
+      <span style="color:var(--dim);font-size:1.2rem">Discovery Seminar</span>
+    </p>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<div id="notes">
+  <div id="nh"><span>🎤 SPEAKER NOTES</span><span id="nt">⏱ 5 min</span></div>
+  <div id="nb">'The simulator is not a game — it is a serious training environment. Engine failures, instrument failures, emergency checklists — you handle these in the sim first.' If the simulator is on-site, offer a tour after the seminar. That experience is your single most powerful conversion tool.</div>
+</div>
+
+<div id="nav">
+  <button onclick="go(-1)">◀</button>
+  <span id="ctr">9 / 12</span>
+  <button onclick="go(1)">▶</button>
+  <span id="hint">N = notes &nbsp;·&nbsp; F = fullscreen</span>
+</div>
+
+</div><!-- /outer -->
+
+<script>
+/* ── 1080×1080 square canvas, scales to any screen ── */
+const BASE_W = 1080, BASE_H = 1080;
+function scaleToFit() {
+  const scale = Math.min(window.innerWidth / BASE_W, window.innerHeight / BASE_H);
+  const left  = Math.round((window.innerWidth  - BASE_W * scale) / 2);
+  const top   = Math.round((window.innerHeight - BASE_H * scale) / 2);
+  const o = document.getElementById('outer');
+  o.style.width = BASE_W + 'px'; o.style.height = BASE_H + 'px';
+  o.style.left  = left + 'px';   o.style.top    = top  + 'px';
+  o.style.transform = 'scale(' + scale + ')';
+  o.style.transformOrigin = 'top left';
+}
+window.addEventListener('resize', scaleToFit);
+scaleToFit();
+
+/* ── Slide logic ── */
+const slides = document.querySelectorAll('.slide');
+const total  = slides.length;
+let cur = 0;
+function show(n) {
+  slides[cur].classList.remove('active');
+  cur = ((n % total) + total) % total;
+  slides[cur].classList.add('active');
+  document.getElementById('progress').style.width = ((cur + 1) / total * 100) + '%';
+  document.getElementById('ctr').textContent = (cur + 1) + ' / ' + total;
+  const s = slides[cur];
+  document.getElementById('nt').textContent = '⏱ ' + (s.dataset.time || '');
+  document.getElementById('nb').textContent  = s.dataset.notes || '';
+  slides.forEach((sl, i) => {
+    const v = sl.querySelector('video');
+    if (!v) return;
+    if (i === cur) v.play().catch(() => {});
+    else { v.pause(); v.currentTime = 0; }
+  });
+}
+function go(dir) { show(cur + dir); }
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+  else if (e.key === 'ArrowLeft') go(-1);
+  else if (e.key === 'n' || e.key === 'N') document.getElementById('notes').classList.toggle('open');
+  else if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+});
+document.getElementById('deck').addEventListener('click', () => go(1));
+show(0);
+</script>
+</body>
+</html>                                                                                                                                                                                                                                                                                                                              
